@@ -2,6 +2,7 @@ package info.beverlyshill.javaspringmvc;
 
 import info.beverlyshill.javaspringmvc.dao.PagesDao;
 import info.beverlyshill.javaspringmvc.domain.Pages;
+import info.beverlyshill.javaspringmvc.util.Message;
 
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +10,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,9 @@ public class PagesController {
 
 	@Autowired
 	private PagesDao pagesDao;
+
+	@Autowired
+	MessageSource messageSource;
 
 	private String nameValue = "Index";
 
@@ -53,17 +58,34 @@ public class PagesController {
 			try {
 				pages = pagesDao.findAll(nameValue);
 			} catch (Exception e) {
-				// TODO Display Message
+				model.addAttribute(
+						"message",
+						new Message("error", messageSource.getMessage(
+								"findall_retrieve_fail", new Object[] {},
+								locale)));
 				logger.error("Error in findAll ", e.getMessage());
 			}
 		} else {
 			try {
 				pages = pagesDao.findAll(model.toString());
 			} catch (Exception e) {
-				// TODO Display message
+				model.addAttribute(
+						"message",
+						new Message("error", messageSource.getMessage(
+								"findall_retrieve_fail", new Object[] {},
+								locale)));
 				logger.error("Error in findAll ", e.getMessage());
 			}
 		}
+		// After retrieval see if no records were returned
+		if (pages.size() == 0) {
+			model.addAttribute(
+					"message",
+					new Message("error", messageSource.getMessage(
+							"findall_retrieve_fail", new Object[] {}, locale)));
+			logger.error("Error in findAll. No records were returned ");
+		}
+		// Log the number of Pags records retrieved
 		logger.info("Pages record count: " + pages.size());
 		// Add the Pages object to the model
 		model.addAttribute("pages", pages);

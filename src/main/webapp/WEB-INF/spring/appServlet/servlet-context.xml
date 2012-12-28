@@ -25,9 +25,13 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- Messages configuration -->
+	<beans:bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource">
+	    <beans:property name="basenames" value="/WEB-INF/messages/application,/WEB-INF/messages/messages" />
+	    <beans:property name="defaultEncoding" value="UTF-8" />
+	</beans:bean>
+	
 	<beans:import resource="classpath:datasource.xml" />
 	
 	<context:component-scan base-package="info.beverlyshill.javaspringmvc" />
-	
-	
 </beans:beans>
