@@ -112,7 +112,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test(expected = Exception.class)
 	public void getPagesWithNullValue() throws Exception {
 		given(pagesDao.findAll("null")).willReturn(nullList);
-		assertEquals("Excpetion was expected but not thrown.",pagesDao.findAll("null").get(0).getName(), null);
+		assertEquals("Excpetion was expected but not thrown.",pagesController.getPagesDao().findAll("null").get(0).getName(), null);
 		verify(pagesDao, times(1)).findAll("null");
 	}
 	
