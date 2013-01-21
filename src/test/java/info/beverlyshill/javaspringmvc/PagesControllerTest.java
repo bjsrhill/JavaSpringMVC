@@ -82,7 +82,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test
 	public void testPagesListDomainData() throws Exception {
 		given(pagesDao.findAll("Test")).willReturn(pagesList);
-		assertEquals("Expected domain data was not returned.",pagesDao.findAll("Test").get(0).getName(),
+		assertEquals("Expected domain data was not returned.",pagesController.getPagesDao().findAll("Test").get(0).getName(),
 				newPage.getName());
 		verify(pagesDao, times(1)).findAll("Test");
 	}
