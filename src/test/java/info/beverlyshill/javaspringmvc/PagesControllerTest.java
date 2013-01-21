@@ -31,19 +31,20 @@ public class PagesControllerTest extends AbstractControllerTest {
 
 	private List<Pages> nullList = null;
 
-	private Pages newPage = new Pages();
-
 	private PagesController pagesController = new PagesController();
 
 	@Before
 	public void initPages() {
 		// mock PagesDaoImpl dao implementation
 		pagesDao = mock(PagesDaoImpl.class);
+		// set the mocked pagesDao in pagesController
 		pagesController.setPagesDao(pagesDao);
-		newPage.setDetailPage("Test detail page");
-		newPage.setName("Test");
-		newPage.setTextDesc("Test description");
-		pagesList.add(newPage);
+		// add the records for comparison
+		this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
+		this.addTestRecord("Index", "Development methodology is TDD with JUnit unit tests.", "");
+		this.addTestRecord("Index", "Data is obtained from a lightweight embedded database server H2 via Hibernate ORM.", "");
+		this.addTestRecord("Index", "Web pages are styled with CSS.", "");
+		this.addTestRecord("Index", "log4j is used for logging.", "");	
 	}
 
 	/**
@@ -68,9 +69,12 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test
 	public void testPagesListModel() throws Exception {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
-		String p = pagesController.index(null, uiModel);
+		pagesController.index(null, uiModel);
+		@SuppressWarnings("unchecked")
 		List<Pages> returnedPage = (List<Pages>) uiModel.get("pages");
-		assertEquals("The expected model was not returned.",p.length(), returnedPage.size());
+		for(int i=0; i<returnedPage.size();i++) {
+			assertEquals("Incorrect model data returned.", pagesList.get(i).getTextDesc(),returnedPage.get(i).getTextDesc());
+		}
 	}
 
 	/**
@@ -81,10 +85,12 @@ public class PagesControllerTest extends AbstractControllerTest {
 	 */
 	@Test
 	public void testPagesListDomainData() throws Exception {
-		given(pagesDao.findAll("Test")).willReturn(pagesList);
-		assertEquals("Expected domain data was not returned.",pagesController.getPagesDao().findAll("Test").get(0).getName(),
-				newPage.getName());
-		verify(pagesDao, times(1)).findAll("Test");
+		given(pagesDao.findAll("Index")).willReturn(pagesList);
+		for(int i=0; i<pagesList.size();i++) {
+			assertEquals("Expected domain data was not returned.",pagesController.getPagesDao().findAll("Index").get(0).getTextDesc(),
+					pagesList.get(0).getTextDesc());
+		}
+		verify(pagesDao, times(pagesList.size())).findAll("Index");
 	}
 	
 	/**
@@ -108,5 +114,19 @@ public class PagesControllerTest extends AbstractControllerTest {
 		given(pagesDao.findAll("null")).willReturn(nullList);
 		assertEquals("Excpetion was expected but not thrown.",pagesDao.findAll("null").get(0).getName(), null);
 		verify(pagesDao, times(1)).findAll("null");
+	}
+	
+	/**
+	 * Adds a record of parameter values to the pagesList ArrayList
+	 * @param name corresponding to name in pagesList
+	 * @param description corresponding to textDesc in pagesList
+	 * @param detailPage corresponding to detailPage in pagesList
+	 */
+	private void addTestRecord(String name, String description, String detailPage) {
+		Pages newPage = new Pages();
+		newPage.setName(name);
+		newPage.setTextDesc(description);
+		newPage.setDetailPage(detailPage);
+		pagesList.add(newPage);
 	}
 }
