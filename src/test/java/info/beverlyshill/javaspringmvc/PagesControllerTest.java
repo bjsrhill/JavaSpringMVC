@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import info.beverlyshill.javaspringmvc.domain.Pages;
 import info.beverlyshill.javaspringmvc.hibernate.dao.PagesDaoImpl;
+import info.beverlyshill.javaspringmvc.dao.PagesDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
 		String p = pagesController.index(null, uiModel);
 		assertNotNull(p);
-		assertEquals("index", p);
+		assertEquals("Expected view was not returned.","index", p);
 	}
 
 	/**
@@ -69,7 +70,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
 		String p = pagesController.index(null, uiModel);
 		List<Pages> returnedPage = (List<Pages>) uiModel.get("pages");
-		assertEquals(p.length(), returnedPage.size());
+		assertEquals("The expected model was not returned.",p.length(), returnedPage.size());
 	}
 
 	/**
@@ -81,9 +82,20 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test
 	public void testPagesListDomainData() throws Exception {
 		given(pagesDao.findAll("Test")).willReturn(pagesList);
-		assertEquals(pagesDao.findAll("Test").get(0).getName(),
+		assertEquals("Expected domain data was not returned.",pagesDao.findAll("Test").get(0).getName(),
 				newPage.getName());
 		verify(pagesDao, times(1)).findAll("Test");
+	}
+	
+	/**
+	 * Test that the pagesDao is returned
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testGetPagesDao() throws Exception {
+		PagesDao pd = pagesController.getPagesDao();
+		assertNotNull("The PagesDao from PagesController is null.",pd);
 	}
 
 	/**
@@ -94,7 +106,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test(expected = Exception.class)
 	public void getPagesWithNullValue() throws Exception {
 		given(pagesDao.findAll("null")).willReturn(nullList);
-		assertEquals(pagesDao.findAll("null").get(0).getName(), null);
+		assertEquals("Excpetion was expected but not thrown.",pagesDao.findAll("null").get(0).getName(), null);
 		verify(pagesDao, times(1)).findAll("null");
 	}
 }
