@@ -2,6 +2,8 @@ package info.beverlyshill.javaspringmvc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -32,6 +34,10 @@ public class PagesControllerTest extends AbstractControllerTest {
 	private List<Pages> nullList = null;
 
 	private PagesController pagesController = new PagesController();
+	
+	private String validNameValue = "Index";
+	
+	private String nullNameValue = null;
 
 	@Before
 	public void initPages() {
@@ -56,7 +62,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test
 	public void testPagesListView() throws Exception {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
-		String p = pagesController.index(null, uiModel);
+		String p = pagesController.index(null, uiModel, validNameValue);
 		assertNotNull(p);
 		assertEquals("Expected view was not returned.","index", p);
 	}
@@ -69,7 +75,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test
 	public void testPagesListModel() throws Exception {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
-		pagesController.index(null, uiModel);
+		pagesController.index(null, uiModel, validNameValue);
 		@SuppressWarnings("unchecked")
 		List<Pages> returnedPage = (List<Pages>) uiModel.get("pages");
 		for(int i=0; i<returnedPage.size();i++) {
@@ -114,6 +120,46 @@ public class PagesControllerTest extends AbstractControllerTest {
 		given(pagesDao.findAll("null")).willReturn(nullList);
 		assertEquals("Excpetion was expected but not thrown.",pagesController.getPagesDao().findAll("null").get(0).getName(), null);
 		verify(pagesDao, times(1)).findAll("null");
+	}
+	
+	/**
+	 * Tests that the view displays error with 
+	 * null Pages data
+	 * 
+	 * @throws Exception
+	 */
+	@Test(expected = Exception.class)
+	public void retrieveNullPagesAddsErrorMessageToModel() throws Exception {
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		pagesController.retrievePagesData(null, uiModel, nullNameValue);
+		uiModel = pagesController.getModel();
+		assertTrue(uiModel.containsAttribute("message"));
+	}
+	
+	/**
+	 * Tests that the view does not display an error
+	 * message with a valid Pages list
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void retrievePagesAddsNoErrorMessageToModel() throws Exception {
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		pagesController.retrievePagesData(null, uiModel, validNameValue);
+		uiModel = pagesController.getModel();
+		assertNull(uiModel);
+	}
+	
+	/**
+	 * Tests that the view sets Pages data on model
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void addsPagesToModel() throws Exception {
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		pagesController.addDataToModel(uiModel, pagesList);
+		assertTrue(uiModel.containsAttribute("pages"));
 	}
 	
 	/**

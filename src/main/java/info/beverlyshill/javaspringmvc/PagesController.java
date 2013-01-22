@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,11 +32,13 @@ public class PagesController {
 	@Autowired
 	MessageSource messageSource;
 
-	private String nameValue = "Index";
+	private String defaultNameValue = "Index";
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private List<Pages> pages = null;
+	
+	private ExtendedModelMap model;
 
 	/**
 	 * Selects the index view to render by returning its name NS
@@ -47,20 +50,22 @@ public class PagesController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index(Locale locale, Model model) {
+	public String index(Locale locale, Model model, String nameValue) {
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
 		ctx.load("classpath:datasource.xml");
 		ctx.refresh();
+		// if nameValues attribute is null, use default value
+		if(null == nameValue) {
+			nameValue = defaultNameValue;
+		}
 		// get the dao object for Pages data
 		pagesDao = ctx.getBean("pagesDao", PagesDao.class);
 		// Retrieve all Pages records with specified value for name column
-		retrievePagesData(locale, model);
+		retrievePagesData(locale, model, nameValue);
 		// After retrieval see if no records were returned
 		getDataCount(locale, model);
 		// Add pages data to model
-		if(null != pages) {
-			addDataToModel(model);
-		}
+		addDataToModel(model, pages);
 		return "index";
 	}
 	
@@ -68,8 +73,10 @@ public class PagesController {
 	 * Adds the retrieved Pages data to the model
 	 * @param model is the Spring model
 	 */
-	public void addDataToModel(Model model) {
-		model.addAttribute("pages", pages);
+	public void addDataToModel(Model model, List<Pages> pages) {
+		if(null != pages) {
+			model.addAttribute("pages", pages);
+		}
 	}
 	
 	/**
@@ -99,7 +106,7 @@ public class PagesController {
 	 * @param locale is internationalization locale
 	 * @param model is the Spring model
 	 */
-	public void retrievePagesData(Locale locale, Model model) {
+	public void retrievePagesData(Locale locale, Model model, String nameValue) {
 		if (null == model || model.asMap().size() == 0) {
 			try {
 				pages = pagesDao.findAll(nameValue);
@@ -112,6 +119,10 @@ public class PagesController {
 				logger.error("Error retrieving Pages data.", e.getMessage());
 			}
 		} 
+	}
+	
+	public ExtendedModelMap getModel() {
+		return model;
 	}
 
 	public PagesDao getPagesDao() {
