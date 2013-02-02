@@ -66,6 +66,20 @@ public class PagesControllerTest extends AbstractControllerTest {
 		assertNotNull(p);
 		assertEquals("Expected view was not returned.","index", p);
 	}
+	
+	/**
+	 * Tests that when the index method is invoked from a GET request
+	 * with a null name value and the expected view is returned
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testPagesListViewNullName() throws Exception {
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		String p = pagesController.index(null, uiModel, null);
+		assertNotNull(p);
+		assertEquals("Expected view was not returned.","index", p);
+	}
 
 	/**
 	 * Tests that the model returned with the view is what is expected
@@ -159,6 +173,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	public void addsPagesToModel() throws Exception {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
 		pagesController.addDataToModel(uiModel, pagesList);
+		//uiModel = pagesController.getModel();
 		assertTrue(uiModel.containsAttribute("pages"));
 	}
 	
