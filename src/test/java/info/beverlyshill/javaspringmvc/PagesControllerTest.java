@@ -1,6 +1,7 @@
 package info.beverlyshill.javaspringmvc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -176,6 +177,19 @@ public class PagesControllerTest extends AbstractControllerTest {
 		pagesController.addDataToModel(uiModel, pagesList);
 		uiModel = pagesController.getModel();
 		assertTrue(uiModel.containsAttribute("pages"));
+	}
+	
+	/**
+	 * Tests that the view does not set null Pages data on model
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void addsPagesToModelNull() throws Exception {
+		Model uiModel = new ExtendedModelMap();
+		pagesController.addDataToModel(uiModel, null);
+		uiModel = pagesController.getModel();
+		assertFalse(uiModel.containsAttribute("pages"));
 	}
 	
 	/**
