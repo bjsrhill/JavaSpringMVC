@@ -18,6 +18,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 
 /**
  * Tests for PagesController class
@@ -144,7 +145,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	 */
 	@Test(expected = Exception.class)
 	public void retrieveNullPagesAddsErrorMessageToModel() throws Exception {
-		ExtendedModelMap uiModel = new ExtendedModelMap();
+		Model uiModel = new ExtendedModelMap();
 		pagesController.retrievePagesData(null, uiModel, nullNameValue);
 		uiModel = pagesController.getModel();
 		assertTrue(uiModel.containsAttribute("message"));
@@ -158,7 +159,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	 */
 	@Test
 	public void retrievePagesAddsNoErrorMessageToModel() throws Exception {
-		ExtendedModelMap uiModel = new ExtendedModelMap();
+		Model uiModel = new ExtendedModelMap();
 		pagesController.retrievePagesData(null, uiModel, validNameValue);
 		uiModel = pagesController.getModel();
 		assertNull(uiModel);
@@ -171,9 +172,9 @@ public class PagesControllerTest extends AbstractControllerTest {
 	 */
 	@Test
 	public void addsPagesToModel() throws Exception {
-		ExtendedModelMap uiModel = new ExtendedModelMap();
+		Model uiModel = new ExtendedModelMap();
 		pagesController.addDataToModel(uiModel, pagesList);
-		//uiModel = pagesController.getModel();
+		uiModel = pagesController.getModel();
 		assertTrue(uiModel.containsAttribute("pages"));
 	}
 	

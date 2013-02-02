@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +37,7 @@ public class PagesController {
 	
 	private List<Pages> pages = null;
 	
-	private ExtendedModelMap model;
+	private Model model;
 
 	/**
 	 * Selects the index view to render by returning its name NS
@@ -76,6 +75,7 @@ public class PagesController {
 	public void addDataToModel(Model model, List<Pages> pages) {
 		if(null != pages) {
 			model.addAttribute("pages", pages);
+			this.setModel(model);
 		}
 	}
 	
@@ -119,8 +119,12 @@ public class PagesController {
 		} 
 	}
 	
-	public ExtendedModelMap getModel() {
+	public Model getModel() {
 		return model;
+	}
+	
+	public void setModel(Model model) {
+		this.model = model;
 	}
 
 	public PagesDao getPagesDao() {
