@@ -107,17 +107,15 @@ public class PagesController {
 	 * @param model is the Spring model
 	 */
 	public void retrievePagesData(Locale locale, Model model, String nameValue) {
-		if (null == model || model.asMap().size() == 0) {
-			try {
-				pages = pagesDao.findAll(nameValue);
-			} catch (Exception e) {
-				model.addAttribute(
-						"message",
-						new Message("Error retrieving Pages data.", messageSource.getMessage(
-								e.getMessage(), new Object[] {},
-								locale)));
-				logger.error("Error retrieving Pages data.", e.getMessage());
-			}
+		try {
+			pages = pagesDao.findAll(nameValue);
+		} catch (Exception e) {
+			model.addAttribute(
+					"message",
+					new Message("Error retrieving Pages data.", messageSource.getMessage(
+							e.getMessage(), new Object[] {},
+							locale)));
+			logger.error("Error retrieving Pages data.", e.getMessage());
 		} 
 	}
 	
