@@ -75,8 +75,8 @@ public class PagesController {
 	public void addDataToModel(Model model, List<Pages> pages) {
 		if(null != pages) {
 			model.addAttribute("pages", pages);
-			this.setModel(model);
 		}
+		this.setModel(model);
 	}
 	
 	/**
