@@ -3,21 +3,23 @@ package info.beverlyshill.javaspringmvc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import info.beverlyshill.javaspringmvc.dao.PagesDao;
 import info.beverlyshill.javaspringmvc.domain.Pages;
 import info.beverlyshill.javaspringmvc.hibernate.dao.PagesDaoImpl;
-import info.beverlyshill.javaspringmvc.dao.PagesDao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.context.MessageSource;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
@@ -29,7 +31,9 @@ import org.springframework.ui.Model;
  */
 public class PagesControllerTest extends AbstractControllerTest {
 
-	private PagesDaoImpl pagesDao;
+	private PagesDaoImpl pagesDao = mock(PagesDaoImpl.class);
+	
+	private MessageSource messageSource = mock(MessageSource.class);
 
 	private List<Pages> pagesList = new ArrayList<Pages>();
 
@@ -43,16 +47,12 @@ public class PagesControllerTest extends AbstractControllerTest {
 
 	@Before
 	public void initPages() {
-		// mock PagesDaoImpl dao implementation
-		pagesDao = mock(PagesDaoImpl.class);
 		// set the mocked pagesDao in pagesController
 		pagesController.setPagesDao(pagesDao);
+		pagesController.messageSource = messageSource;
 		// add the records for comparison
-		this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
-		this.addTestRecord("Index", "Development methodology is TDD with JUnit unit tests.", "");
-		this.addTestRecord("Index", "Data is obtained from a lightweight embedded database server H2 via Hibernate ORM.", "");
-		this.addTestRecord("Index", "Web pages are styled with CSS.", "");
-		this.addTestRecord("Index", "log4j is used for logging.", "");	
+		this.addTestRecord("Index", "Test 1.", "");
+		this.addTestRecord("Index", "Test 2", "");
 	}
 
 	/**
@@ -107,12 +107,10 @@ public class PagesControllerTest extends AbstractControllerTest {
 	 */
 	@Test
 	public void testPagesListDomainData() throws Exception {
+		ExtendedModelMap uiModel = new ExtendedModelMap();
 		given(pagesDao.findAll("Index")).willReturn(pagesList);
-		for(int i=0; i<pagesList.size();i++) {
-			assertEquals("Expected domain data was not returned.",pagesController.getPagesDao().findAll("Index").get(0).getTextDesc(),
-					pagesList.get(0).getTextDesc());
-		}
-		verify(pagesDao, times(pagesList.size())).findAll("Index");
+		pagesController.index(null, uiModel, null);
+		verify(pagesDao, times(1)).findAll("Index");
 	}
 	
 	/**
@@ -123,7 +121,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test
 	public void testGetPagesDao() throws Exception {
 		PagesDao pd = pagesController.getPagesDao();
-		assertNotNull("The PagesDao from PagesController is null.",pd);
+		assertEquals("The expected and returned PagesDao are not equal." ,pagesDao, pd);
 	}
 
 	/**
@@ -133,23 +131,26 @@ public class PagesControllerTest extends AbstractControllerTest {
 	 */
 	@Test(expected = Exception.class)
 	public void getPagesWithNullValue() throws Exception {
-		given(pagesDao.findAll("null")).willReturn(nullList);
-		assertEquals("Excpetion was expected but not thrown.",pagesController.getPagesDao().findAll("null").get(0).getName(), null);
-		verify(pagesDao, times(1)).findAll("null");
+		Mockito.when(pagesDao.findAll("null")).thenThrow(Exception.class);
+		pagesController.getPagesDao().findAll("null");
 	}
 	
 	/**
-	 * Tests that the view displays error with 
+	 * Tests that the view displays error message with 
 	 * null Pages data
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = Exception.class)
+	@Test
 	public void retrieveNullPagesAddsErrorMessageToModel() throws Exception {
 		Model uiModel = new ExtendedModelMap();
+		pagesController.setModel(uiModel);
+		Locale locale = null;
+		Mockito.when(messageSource.getMessage("findall_retrieve_fail", new Object[] {}, locale)).thenReturn("success");
+		Mockito.when(pagesDao.findAll(nullNameValue)).thenThrow(Exception.class);
 		pagesController.retrievePagesData(null, uiModel, nullNameValue);
 		uiModel = pagesController.getModel();
-		assertTrue(uiModel.containsAttribute("message"));
+		assertTrue("Model does not contain attribute message and should.",uiModel.containsAttribute("message"));
 	}
 	
 	/**
@@ -161,9 +162,11 @@ public class PagesControllerTest extends AbstractControllerTest {
 	@Test
 	public void retrievePagesAddsNoErrorMessageToModel() throws Exception {
 		Model uiModel = new ExtendedModelMap();
+		pagesController.setModel(uiModel);
+		given(pagesDao.findAll(validNameValue)).willReturn(pagesList);
 		pagesController.retrievePagesData(null, uiModel, validNameValue);
 		uiModel = pagesController.getModel();
-		assertNull(uiModel);
+		assertFalse("Model contains attribute message and should not.",uiModel.containsAttribute("message"));
 	}
 	
 	/**
@@ -176,7 +179,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 		Model uiModel = new ExtendedModelMap();
 		pagesController.addDataToModel(uiModel, pagesList);
 		uiModel = pagesController.getModel();
-		assertTrue(uiModel.containsAttribute("pages"));
+		assertTrue("Model does not contain pages attribute and should.",uiModel.containsAttribute("pages"));
 	}
 	
 	/**
@@ -189,7 +192,7 @@ public class PagesControllerTest extends AbstractControllerTest {
 		Model uiModel = new ExtendedModelMap();
 		pagesController.addDataToModel(uiModel, null);
 		uiModel = pagesController.getModel();
-		assertFalse(uiModel.containsAttribute("pages"));
+		assertFalse("Model contains pages attribute and should not.",uiModel.containsAttribute("pages"));
 	}
 	
 	/**
