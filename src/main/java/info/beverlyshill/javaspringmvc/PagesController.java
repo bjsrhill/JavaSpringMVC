@@ -57,8 +57,10 @@ public class PagesController {
 		if(null == nameValue) {
 			nameValue = defaultNameValue;
 		}
-		// get the dao object for Pages data
-		pagesDao = ctx.getBean("pagesDao", PagesDao.class);
+		if(null == getPagesDao()) {
+			// set the dao object for Pages data
+			setPagesDao(ctx.getBean("pagesDao", PagesDao.class));
+		}
 		// Retrieve all Pages records with specified value for name column
 		retrievePagesData(locale, model, nameValue);
 		// After retrieval see if no records were returned
@@ -88,6 +90,7 @@ public class PagesController {
 	 * @param model is the Spring model
 	 */
 	public void getDataCount(Locale locale, Model model) {
+		// Log the number of Pages records retrieved
 		if (pages.size() == 0) {
 			model.addAttribute(
 					"message",
