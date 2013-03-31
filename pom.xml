@@ -248,7 +248,7 @@
 			</container>
 			<configuration>
 				<type>existing</type>
-				<home>./cargo/configurations/tomcat7x</home>
+				<home>tomcat7x</home>
 			</configuration>
 		</configuration>
 	</plugin>
