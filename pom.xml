@@ -249,7 +249,7 @@
 			</container>
 			<configuration>
 				<type>existing</type>
-				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39/conf</home>
 			</configuration>
 		</configuration>
 	</plugin>
