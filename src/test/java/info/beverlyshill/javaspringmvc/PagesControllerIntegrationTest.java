@@ -52,7 +52,7 @@ public class PagesControllerIntegrationTest extends AbstractControllerTest {
 		pagesController.messageSource = messageSource;
 		// add the records for comparison
 		//this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
-		this.addTestRecord("Index", "Test 2", "");
+		this.addTestRecord("Index", "This is a sample web application built with the Spring framework.]T[his is a sample web application built with the Spring framework.", "");
 	}
 
 	/**
