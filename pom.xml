@@ -242,14 +242,15 @@
 		<artifactId>cargo-maven2-plugin</artifactId>
 		<version>1.0</version>
 		<configuration>
-		<!-- Container configuration -->
-		<container>
-		<containerId>tomcat7x</containerId>
-		</container>
-		<configuration>
-		<type>existing</type>
-		<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
-		</configuration>
+			<!-- Container configuration -->
+			<container>
+				<containerId>tomcat7x</containerId>
+				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+			</container>
+			<configuration>
+				<type>existing</type>
+				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+			</configuration>
 		</configuration>
 	</plugin>
   </plugins>
