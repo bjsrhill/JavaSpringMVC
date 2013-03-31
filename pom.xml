@@ -249,7 +249,7 @@
 			</container>
 			<configuration>
 				<type>existing</type>
-				<home>tomcat7x</home>
+				<home>/Users/Shared/Jenkins/Home/workspace/JavaSpringMVC</home>
 			</configuration>
 		</configuration>
 	</plugin>
