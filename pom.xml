@@ -204,31 +204,54 @@
         </configuration>
       </plugin> 
       <plugin>
-	      <groupId>org.apache.maven.plugins</groupId>
-	      <artifactId>maven-surefire-plugin</artifactId>
-	      <configuration>
-	        <excludes>
-	          <exclude>**/*IntegrationTest.java</exclude>
-	        </excludes>
-	      </configuration>
-	      <executions>
-	        <execution>
-	          <id>integration-test</id>
-	          <goals>
-	            <goal>test</goal>
-	          </goals>
-	          <phase>integration-test</phase>
-	          <configuration>
-	            <excludes>
-	              <exclude>none</exclude>
-	            </excludes>
-	            <includes>
-	              <include>**/*IntegrationTest.java</include>
-	            </includes>
-	          </configuration>
-	        </execution>
-	      </executions>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+              <skip>true</skip>
+          </configuration>
+          <executions>
+              <execution>
+                  <id>unit-tests</id>
+                  <phase>test</phase>
+                  <goals>
+                      <goal>test</goal>
+                  </goals>
+                  <configuration>
+                      <skip>false</skip>
+                      <excludes>
+                          <exclude>**/*IntegrationTest.java</exclude>
+                      </excludes>
+                  </configuration>
+              </execution>
+              <execution>
+                  <id>integration-tests</id>
+                  <phase>integration-test</phase>
+                  <goals>
+                      <goal>test</goal>
+                  </goals>
+                  <configuration>
+                      <skip>false</skip>
+                      <includes>
+                          <include>**/*IntegrationTest.java</include>
+                      </includes>
+                  </configuration>
+              </execution>
+          </executions>
       </plugin>
+      <plugin>
+		<groupId>org.codehaus.cargo</groupId>
+		<artifactId>cargo-maven2-plugin</artifactId>
+		<version>1.0</version>
+		<configuration>
+		<!-- Container configuration -->
+		<container>
+		<containerId>tomcat6x</containerId>
+		</container>
+		<configuration>
+		<type>existing</type>
+		<home>/usr/local/apache-tomcat-6.0.18</home>
+		</configuration>
+		</configuration>
+	</plugin>
   </plugins>
     </build>
 </project>
