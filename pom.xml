@@ -244,11 +244,11 @@
 		<configuration>
 		<!-- Container configuration -->
 		<container>
-		<containerId>tomcat6x</containerId>
+		<containerId>tomcat7x</containerId>
 		</container>
 		<configuration>
 		<type>existing</type>
-		<home>/usr/local/apache-tomcat-6.0.18</home>
+		<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
 		</configuration>
 		</configuration>
 	</plugin>
