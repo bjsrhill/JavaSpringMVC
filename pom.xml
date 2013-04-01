@@ -250,12 +250,12 @@
 			<!-- Container configuration -->
 			<container>
 				<containerId>tomcat7x</containerId>
-				<type>existing</type>
-				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+				<type>installed</type>
+				<home>${catalina.home}</home>
 			</container>
 			<configuration>
 				<type>existing</type>
-				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+				<home>${catalina.home}</home>
 			</configuration>
 		</configuration>
 	</plugin>
