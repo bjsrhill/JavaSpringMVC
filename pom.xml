@@ -146,6 +146,12 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.6.8.Final</version>
 		</dependency>
+		<dependency>
+		  <groupId>org.jboss.arquillian.container</groupId>
+		  <artifactId>arquillian-tomcat-managed-7</artifactId>
+		  <version>1.0.0.CR4</version>
+		  <scope>test</scope>
+		</dependency>
 	</dependencies>
     <build>
         <plugins>
@@ -244,7 +250,8 @@
 			<!-- Container configuration -->
 			<container>
 				<containerId>tomcat7x</containerId>
-				<type>installed</type>
+				<type>local</type>
+				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
 			</container>
 			<configuration>
 				<type>existing</type>
