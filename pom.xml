@@ -251,29 +251,11 @@
 			<container>
 				<containerId>tomcat7x</containerId>
 				<type>remote</type>
+				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
 			</container>
 			<configuration>
-				<type>runtime</type>
-				<properties>  
-                <!-- see tomcat6x profile -->  
-                <cargo.tomcat.manager.url>http://localhost:8090}</cargo.tomcat.manager.url>  
-                <cargo.remote.username>tomcat</cargo.remote.username>  
-                <cargo.remote.password>tomcat</cargo.remote.password>  
-            </properties>  
-        </configuration>  
-        <deployer>  
-            <type>remote</type>  
-            <deployables>  
-                <deployable>  
-                    <groupid>${project.groupId}</groupid>  
-                    <artifactid>${project.artifactId}</artifactid>  
-                    <type>war</type>  
-                    <properties>  
-                        <context>${project.artifactId}</context>  
-                    </properties>  
-                </deployable>  
-            </deployables>  
-        </deployer>  
+				<type>existing</type>
+				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
 			</configuration>
 		</configuration>
 	</plugin>
