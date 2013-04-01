@@ -29,7 +29,7 @@ import org.springframework.ui.Model;
  * @author bhill2
  * 
  */
-public class PagesControllerIntegrationTest extends AbstractControllerTest {
+public class PagesControllerIT extends AbstractControllerTest {
 
 	//private PagesDaoImpl pagesDao = new PagesDaoImpl();
 	
@@ -51,7 +51,6 @@ public class PagesControllerIntegrationTest extends AbstractControllerTest {
 		//pagesController.setPagesDao(pagesDao);
 		pagesController.messageSource = messageSource;
 		// add the records for comparison
-		//this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
 		this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
 	}
 
@@ -80,9 +79,7 @@ public class PagesControllerIntegrationTest extends AbstractControllerTest {
 		pagesController.index(null, uiModel, validNameValue);
 		@SuppressWarnings("unchecked")
 		List<Pages> returnedPage = (List<Pages>) uiModel.get("pages");
-		//for(int i=0; i<returnedPage.size();i++) {
-			assertEquals("Incorrect model data returned.", pagesList.get(0).getTextDesc(),returnedPage.get(0).getTextDesc());
-		//}
+		assertEquals("Incorrect model data returned.", pagesList.get(0).getTextDesc(),returnedPage.get(0).getTextDesc());
 	}
 
 
