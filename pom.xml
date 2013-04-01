@@ -237,6 +237,21 @@
               </execution>
           </executions>
       </plugin>
+      <plugin>
+		<groupId>org.codehaus.cargo</groupId>
+		<artifactId>cargo-maven2-plugin</artifactId>
+		<configuration>
+			<!-- Container configuration -->
+			<container>
+				<containerId>tomcat7x</containerId>
+				<type>installed</type>
+			</container>
+			<configuration>
+				<type>existing</type>
+				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+			</configuration>
+		</configuration>
+	</plugin>
   </plugins>
     </build>
 </project>
