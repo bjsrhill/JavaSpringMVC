@@ -250,12 +250,30 @@
 			<!-- Container configuration -->
 			<container>
 				<containerId>tomcat7x</containerId>
-				<type>installed</type>
-				<home>${catalina.home}</home>
+				<type>remote</type>
 			</container>
 			<configuration>
-				<type>existing</type>
-				<home>${catalina.home}</home>
+				<type>runtime</type>
+				<properties>  
+                <!-- see tomcat6x profile -->  
+                <cargo.tomcat.manager.url>http://localhost:8090}</cargo.tomcat.manager.url>  
+                <cargo.remote.username>tomcat</cargo.remote.username>  
+                <cargo.remote.password>tomcat</cargo.remote.password>  
+            </properties>  
+        </configuration>  
+        <deployer>  
+            <type>remote</type>  
+            <deployables>  
+                <deployable>  
+                    <groupid>${project.groupId}</groupid>  
+                    <artifactid>${project.artifactId}</artifactid>  
+                    <type>war</type>  
+                    <properties>  
+                        <context>${project.artifactId}</context>  
+                    </properties>  
+                </deployable>  
+            </deployables>  
+        </deployer>  
 			</configuration>
 		</configuration>
 	</plugin>
