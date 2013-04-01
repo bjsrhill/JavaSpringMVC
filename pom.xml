@@ -250,7 +250,7 @@
 			<!-- Container configuration -->
 			<container>
 				<containerId>tomcat7x</containerId>
-				<type>local</type>
+				<type>standalone</type>
 				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
 			</container>
 			<configuration>
