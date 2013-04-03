@@ -254,13 +254,13 @@
 		<configuration>
 			<!-- Container configuration -->
 			<container>
-				<containerId>tomcat7x</containerId>
-				<type>runtime</type>
-				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+				<containerId>jetty8x</containerId>
+				<type>embedded</type>
 			</container>
 			<configuration>
-				<type>existing</type>
-				<home>/Users/bhill2/Downloads/apache-tomcat-7.0.39</home>
+				<properties>
+            		<cargo.servlet.port>8060</cargo.servlet.port>
+         		</properties>
 			</configuration>
 		</configuration>
 	</plugin>
@@ -285,4 +285,56 @@
 </plugin>
   </plugins>
     </build>
+    <profiles>
+   <profile>
+      <id>integration</id>
+      <build>
+         <plugins>
+            <plugin>
+			   <groupId>org.codehaus.cargo</groupId>
+			   <artifactId>cargo-maven2-plugin</artifactId>
+			   <configuration>
+			      <wait>false</wait>
+			   </configuration>
+			   <executions>
+			      <execution>
+			         <id>start-server</id>
+			         <phase>pre-integration-test</phase>
+			         <goals>
+			            <goal>start</goal>
+			         </goals>
+			      </execution>
+			      <execution>
+			         <id>stop-server</id>
+			         <phase>post-integration-test</phase>
+			         <goals>
+			            <goal>stop</goal>
+			         </goals>
+      			</execution>
+   			</executions>
+			</plugin>
+			<plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-surefire-plugin</artifactId>
+		      <executions>
+		         <execution>
+		            <phase>integration-test</phase>
+		            <goals>
+		               <goal>test</goal>
+		            </goals>
+		            <configuration>
+		               <excludes>
+		                  <exclude>none</exclude>
+		               </excludes>
+		               <includes>
+		                  <include>**/*IntegrationTest.java</include>
+		               </includes>
+		            </configuration>
+		         </execution>
+      		</executions>
+   			</plugin>
+         </plugins>
+      </build>
+   </profile>
+</profiles>
 </project>
