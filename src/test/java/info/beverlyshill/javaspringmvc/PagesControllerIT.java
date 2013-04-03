@@ -11,18 +11,18 @@ import static org.mockito.Mockito.verify;
 import info.beverlyshill.javaspringmvc.dao.PagesDao;
 import info.beverlyshill.javaspringmvc.domain.Pages;
 import info.beverlyshill.javaspringmvc.hibernate.dao.PagesDaoImpl;
-
+ 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+ 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.context.MessageSource;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
-
+ 
 /**
  * Tests for PagesController class
  * 
@@ -30,21 +30,21 @@ import org.springframework.ui.Model;
  * 
  */
 public class PagesControllerIT extends AbstractControllerTest {
-
+ 
 	//private PagesDaoImpl pagesDao = new PagesDaoImpl();
 	
 	private MessageSource messageSource = mock(MessageSource.class);
-
+ 
 	private List<Pages> pagesList = new ArrayList<Pages>();
-
+ 
 	private List<Pages> nullList = null;
-
+ 
 	private PagesController pagesController = new PagesController();
 	
 	private String validNameValue = "Index";
 	
 	private String nullNameValue = null;
-
+ 
 	@Before
 	public void initPages() {
 		// set the mocked pagesDao in pagesController
@@ -53,7 +53,7 @@ public class PagesControllerIT extends AbstractControllerTest {
 		// add the records for comparison
 		this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
 	}
-
+ 
 	/**
 	 * Tests that when the index method is invoked from a GET request the
 	 * expected view is returned
@@ -81,8 +81,8 @@ public class PagesControllerIT extends AbstractControllerTest {
 		List<Pages> returnedPage = (List<Pages>) uiModel.get("pages");
 		assertEquals("Incorrect model data returned.", pagesList.get(0).getTextDesc(),returnedPage.get(0).getTextDesc());
 	}
-
-
+ 
+ 
 	/**
 	 * Adds a record of parameter values to the pagesList ArrayList
 	 * @param name corresponding to name in pagesList
