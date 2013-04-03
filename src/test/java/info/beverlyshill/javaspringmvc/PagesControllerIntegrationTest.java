@@ -29,9 +29,7 @@ import org.springframework.ui.Model;
  * @author bhill2
  * 
  */
-public class PagesControllerIT extends AbstractControllerTest {
- 
-	//private PagesDaoImpl pagesDao = new PagesDaoImpl();
+public class PagesControllerIntegrationTest extends AbstractControllerTest {
 	
 	private MessageSource messageSource = mock(MessageSource.class);
  
@@ -47,8 +45,6 @@ public class PagesControllerIT extends AbstractControllerTest {
  
 	@Before
 	public void initPages() {
-		// set the mocked pagesDao in pagesController
-		//pagesController.setPagesDao(pagesDao);
 		pagesController.messageSource = messageSource;
 		// add the records for comparison
 		this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
