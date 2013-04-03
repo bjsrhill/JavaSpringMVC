@@ -152,6 +152,11 @@
 		  <version>1.0.0.CR4</version>
 		  <scope>test</scope>
 		</dependency>
+		<dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>jakarta-httpcore</artifactId>
+        <version>4.0-alpha2</version>
+      </dependency>
 	</dependencies>
     <build>
         <plugins>
