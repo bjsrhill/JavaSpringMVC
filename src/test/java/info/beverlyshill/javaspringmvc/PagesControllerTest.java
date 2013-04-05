@@ -63,6 +63,8 @@ public class PagesControllerTest extends AbstractControllerTest {
 	 */
 	@Test
 	public void testPagesListView() throws Exception {
+		String localhostname = java.net.InetAddress.getLocalHost().getHostName();
+		System.out.println("The localhostname is: " + localhostname);
 		ExtendedModelMap uiModel = new ExtendedModelMap();
 		String p = pagesController.index(null, uiModel, validNameValue);
 		assertNotNull(p);

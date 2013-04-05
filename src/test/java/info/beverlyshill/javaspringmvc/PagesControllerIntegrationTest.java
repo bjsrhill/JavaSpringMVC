@@ -12,6 +12,7 @@ import info.beverlyshill.javaspringmvc.dao.PagesDao;
 import info.beverlyshill.javaspringmvc.domain.Pages;
 import info.beverlyshill.javaspringmvc.hibernate.dao.PagesDaoImpl;
  
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +45,9 @@ public class PagesControllerIntegrationTest extends AbstractControllerTest {
 	private String nullNameValue = null;
  
 	@Before
-	public void initPages() {
+	public void initPages() throws UnknownHostException {
+		String localhostname = java.net.InetAddress.getLocalHost().getHostName();
+		System.out.println("The localhostname is: " + localhostname);
 		pagesController.messageSource = messageSource;
 		// add the records for comparison
 		this.addTestRecord("Index", "This is a sample web application built with the Spring framework.", "");
