@@ -228,6 +228,9 @@
                   		</goals>
                   		<configuration>
                       		<skip>false</skip>
+                      		<includes>
+                      			<include>**/*Test.java</include>
+                      		</includes>
                       		<excludes>
                           		<exclude>**/*IntegrationTest.java</exclude>
                       		</excludes>
